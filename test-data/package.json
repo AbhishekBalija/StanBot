@@ -1,0 +1,14 @@
+{
+  "name": "stan-chatbot-test-suite",
+  "version": "1.0.0",
+  "description": "Test suite for STAN AI Chatbot",
+  "main": "test-runner.js",
+  "scripts": {
+    "test": "node test-runner.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "author": "",
+  "license": "MIT"
+}

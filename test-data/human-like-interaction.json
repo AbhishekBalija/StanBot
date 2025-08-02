@@ -1,0 +1,200 @@
+[
+  {
+    "testId": "HLI-01",
+    "testName": "Basic Conversation Flow",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "Hi there!"
+      },
+      {
+        "role": "expected",
+        "content": "Greeting response",
+        "evaluation": "Should include a greeting and possibly a question to engage the user"
+      },
+      {
+        "role": "user",
+        "content": "What can you help me with today?"
+      },
+      {
+        "role": "expected",
+        "content": "Capabilities response",
+        "evaluation": "Should outline capabilities in a conversational manner"
+      },
+      {
+        "role": "user",
+        "content": "Can you tell me more about how you remember things?"
+      },
+      {
+        "role": "expected",
+        "content": "Memory explanation",
+        "evaluation": "Should explain memory capabilities while maintaining conversation flow"
+      }
+    ]
+  },
+  {
+    "testId": "HLI-02",
+    "testName": "Tone Adaptation - Positive",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "I'm so happy today! I just got a promotion at work!"
+      },
+      {
+        "role": "expected",
+        "content": "Positive response",
+        "evaluation": "Should match enthusiastic tone and express congratulations"
+      },
+      {
+        "role": "user",
+        "content": "I can't wait to celebrate with my friends this weekend!"
+      },
+      {
+        "role": "expected",
+        "content": "Continued positive engagement",
+        "evaluation": "Should maintain positive tone and engage with celebration plans"
+      }
+    ]
+  },
+  {
+    "testId": "HLI-03",
+    "testName": "Tone Adaptation - Negative",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "I'm feeling really sad today. I didn't get the job I wanted."
+      },
+      {
+        "role": "expected",
+        "content": "Empathetic response",
+        "evaluation": "Should express empathy and understanding"
+      },
+      {
+        "role": "user",
+        "content": "I really thought I was going to get it."
+      },
+      {
+        "role": "expected",
+        "content": "Supportive response",
+        "evaluation": "Should offer support and possibly perspective"
+      }
+    ]
+  },
+  {
+    "testId": "HLI-04",
+    "testName": "Tone Adaptation - Neutral",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "What's the difference between machine learning and deep learning?"
+      },
+      {
+        "role": "expected",
+        "content": "Informative response",
+        "evaluation": "Should provide clear, factual information in a helpful tone"
+      },
+      {
+        "role": "user",
+        "content": "Can you give me some examples of applications?"
+      },
+      {
+        "role": "expected",
+        "content": "Examples response",
+        "evaluation": "Should provide relevant examples while maintaining informative tone"
+      }
+    ]
+  },
+  {
+    "testId": "HLI-05",
+    "testName": "Response Variation",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "Hello"
+      },
+      {
+        "role": "expected",
+        "content": "Greeting 1",
+        "evaluation": "Record for comparison"
+      },
+      {
+        "role": "user",
+        "content": "Hello"
+      },
+      {
+        "role": "expected",
+        "content": "Greeting 2",
+        "evaluation": "Should differ from Greeting 1"
+      },
+      {
+        "role": "user",
+        "content": "Hello"
+      },
+      {
+        "role": "expected",
+        "content": "Greeting 3",
+        "evaluation": "Should differ from Greetings 1 and 2"
+      },
+      {
+        "role": "user",
+        "content": "How are you?"
+      },
+      {
+        "role": "expected",
+        "content": "Status response 1",
+        "evaluation": "Record for comparison"
+      },
+      {
+        "role": "user",
+        "content": "How are you?"
+      },
+      {
+        "role": "expected",
+        "content": "Status response 2",
+        "evaluation": "Should differ from Status response 1"
+      }
+    ]
+  },
+  {
+    "testId": "HLI-06",
+    "testName": "Conversation Continuity",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "I'm thinking about learning to play guitar."
+      },
+      {
+        "role": "expected",
+        "content": "Initial response about guitar",
+        "evaluation": "Should engage with the topic of learning guitar"
+      },
+      {
+        "role": "user",
+        "content": "Do you think acoustic or electric is better for beginners?"
+      },
+      {
+        "role": "expected",
+        "content": "Guitar type comparison",
+        "evaluation": "Should compare options while maintaining conversation context"
+      },
+      {
+        "role": "user",
+        "content": "By the way, do you like music in general?"
+      },
+      {
+        "role": "expected",
+        "content": "Music preference response",
+        "evaluation": "Should address the tangent while maintaining context"
+      },
+      {
+        "role": "user",
+        "content": "Anyway, back to guitars - how long do you think it takes to learn?"
+      },
+      {
+        "role": "expected",
+        "content": "Learning timeline response",
+        "evaluation": "Should recognize return to original topic and provide relevant information"
+      }
+    ]
+  }
+]

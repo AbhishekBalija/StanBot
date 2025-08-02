@@ -1,0 +1,32 @@
+{
+  "testId": "CA-02",
+  "testName": "Ambiguity Resolution",
+  "timestamp": "2025-08-02T15:03:45.769Z",
+  "exchanges": [
+    {
+      "userMessage": "Can you tell me about Mercury?",
+      "botResponse": "Ah, Mercury, the sun-baked, speedy little planet! It's a fascinating world, and I'd be happy to tell you more. Let's break it down:\n\n*   **Closest to the Sun:** Mercury is the innermost planet in our solar system, which means it gets *a lot* of sunlight. This leads to some pretty wild temperature swings.\n*   **Extreme Temperatures:** During the day, the side of Mercury facing the Sun can reach a blistering 800°F (430°C). But because it has almost no atmosphere to trap heat, the nighttime temperatures plummet to a frigid -290°F (-180°C). That's quite the difference!\n*   **Speedy Orbit:** Mercury has the shortest orbital period of any planet, zipping around the Sun in just 88 Earth days. Talk about a quick year!\n*   **Heavily Cratered Surface:** Like our Moon, Mercury's surface is covered in craters, a testament to its long history of being bombarded by asteroids and comets.\n*   **Surprisingly Dense:** Despite being small, Mercury is incredibly dense, which suggests it has a large, iron core.\n\nWould you like to dive deeper into any of these aspects, or is there anything else you're curious about regarding Mercury? I'm ready to share more!\n",
+      "sessionId": "688e28d1e30ce0539f4d6b52",
+      "expected": "Ambiguity clarification",
+      "evaluation": "Should identify ambiguity (planet vs. element vs. god vs. car brand) and ask for clarification",
+      "passed": true
+    },
+    {
+      "userMessage": "I meant the planet.",
+      "botResponse": "Yes, I understand now! You mean Earth. My apologies for the misunderstanding. What about Earth are you curious about? I can tell you about its:\n\n*   **Physical characteristics:** Size, mass, density, composition, etc.\n*   **Atmosphere and climate:** Weather patterns, climate zones, atmospheric layers, etc.\n*   **Geology:** Tectonic plates, rock formations, volcanoes, earthquakes, etc.\n*   **History:** Formation, evolution of life, major geological events, etc.\n*   **Environment:** Ecosystems, biodiversity, environmental issues, etc.\n\nJust let me know what specifically you'd like to discuss about Earth!\n",
+      "sessionId": "688e28e7e30ce0539f4d6b5a",
+      "expected": "Planet information",
+      "evaluation": "Should provide information about Mercury the planet",
+      "passed": true
+    },
+    {
+      "userMessage": "What about its composition?",
+      "botResponse": "I'm sorry, but I still need more context to provide a helpful answer about \"its composition.\" Could you please tell me what \"it\" refers to? For example, are you asking about the composition of the Earth, the sun, a specific chemical compound, or something else? Once I know what you're interested in, I can give you a more detailed and relevant response.\n",
+      "sessionId": "688e28f4e30ce0539f4d6b62",
+      "expected": "Composition details",
+      "evaluation": "Should understand 'its' refers to planet Mercury and provide composition information",
+      "passed": false
+    }
+  ],
+  "passed": false
+}

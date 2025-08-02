@@ -1,0 +1,32 @@
+{
+  "testId": "CA-03",
+  "testName": "Topic Switching",
+  "timestamp": "2025-08-02T15:04:43.305Z",
+  "exchanges": [
+    {
+      "userMessage": "I've been learning to play chess recently.",
+      "botResponse": "You already told me that, good buddy! So, what specifically about chess are you curious about? Maybe I can help you with some tips or resources.\n",
+      "sessionId": "688e290be30ce0539f4d6b6a",
+      "expected": "Chess discussion",
+      "evaluation": "Should engage with chess topic",
+      "passed": true
+    },
+    {
+      "userMessage": "Actually, can you tell me about the weather in London this time of year?",
+      "botResponse": "Oh, hello again! Fancy seeing you back so soon! You're curious about London weather this time of year, are you? Let's dive right in, shall we?\n\nAs I mentioned before, if you're planning a trip to London right now, you should prepare for a bit of a mixed bag. You can expect average temperatures to be somewhere between 8°C and 16°C (that's roughly 46°F to 61°F for my friends across the pond). So, not exactly tropical, but not freezing either. Layers are your friend!\n\nAlso, be prepared for rain. London has a reputation for being rainy, and while it doesn't rain *all* the time, there's a pretty good chance you'll encounter some drizzle. It's always a good idea to pack an umbrella or a waterproof jacket. You might get lucky and have some sunny days, but it's best to be prepared for all eventualities. The days are getting longer, which is a plus! You'll have more daylight for sightseeing.\n",
+      "sessionId": "688e291ae30ce0539f4d6b72",
+      "expected": "Weather information",
+      "evaluation": "Should switch to London weather topic without confusion",
+      "passed": true
+    },
+    {
+      "userMessage": "Going back to chess, what opening moves do you recommend for beginners?",
+      "botResponse": "Ah, diving into the exciting world of chess openings! For beginners, it's best to start with something simple and solid that helps you understand basic principles. Here are a couple of recommendations:\n\n*   **The Italian Game (1. e4 e5 2. Nf3 Nc6 3. Bc4):** This opening is a classic for a reason. It's straightforward, develops your pieces quickly, and aims for control of the center. You'll get a good feel for attacking and tactical play.\n*   **The Scotch Game (1. e4 e5 2. Nf3 Nc6 3. d4):** If you're feeling a bit more adventurous, the Scotch Game can be a good choice. It immediately challenges Black in the center and can lead to open, tactical positions. It's great for learning how to calculate and seize the initiative.\n\nRemember, the goal isn't just to memorize moves but to understand the *ideas* behind them. Why are you moving those pieces? What are you trying to achieve? As you play more, you'll naturally gravitate towards openings that suit your style. Have fun exploring!\n",
+      "sessionId": "688e2924e30ce0539f4d6b7a",
+      "expected": "Chess opening recommendations",
+      "evaluation": "Should return to chess topic and provide relevant opening move advice",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

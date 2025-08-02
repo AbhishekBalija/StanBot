@@ -1,0 +1,161 @@
+[
+  {
+    "testId": "CA-01",
+    "testName": "Multi-turn Context",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "I'm trying to decide between three vacation destinations: Hawaii, Japan, and Italy."
+      },
+      {
+        "role": "expected",
+        "content": "Initial comparison response",
+        "evaluation": "Should acknowledge all three destinations"
+      },
+      {
+        "role": "user",
+        "content": "I love experiencing different cultures and trying new foods."
+      },
+      {
+        "role": "expected",
+        "content": "Cultural aspect response",
+        "evaluation": "Should discuss cultural aspects of the three destinations"
+      },
+      {
+        "role": "user",
+        "content": "But I'm also concerned about budget. I can spend about $3000 total."
+      },
+      {
+        "role": "expected",
+        "content": "Budget consideration response",
+        "evaluation": "Should incorporate budget considerations for the three destinations"
+      },
+      {
+        "role": "user",
+        "content": "Based on everything I've told you, which destination do you think is best for me?"
+      },
+      {
+        "role": "expected",
+        "content": "Comprehensive recommendation",
+        "evaluation": "Should integrate all previous information (destinations, cultural interests, budget) into a reasoned recommendation"
+      }
+    ]
+  },
+  {
+    "testId": "CA-02",
+    "testName": "Ambiguity Resolution",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "Can you tell me about Mercury?"
+      },
+      {
+        "role": "expected",
+        "content": "Ambiguity clarification",
+        "evaluation": "Should identify ambiguity (planet vs. element vs. god vs. car brand) and ask for clarification"
+      },
+      {
+        "role": "user",
+        "content": "I meant the planet."
+      },
+      {
+        "role": "expected",
+        "content": "Planet information",
+        "evaluation": "Should provide information about Mercury the planet"
+      },
+      {
+        "role": "user",
+        "content": "What about its composition?"
+      },
+      {
+        "role": "expected",
+        "content": "Composition details",
+        "evaluation": "Should understand 'its' refers to planet Mercury and provide composition information"
+      }
+    ]
+  },
+  {
+    "testId": "CA-03",
+    "testName": "Topic Switching",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "I've been learning to play chess recently."
+      },
+      {
+        "role": "expected",
+        "content": "Chess discussion",
+        "evaluation": "Should engage with chess topic"
+      },
+      {
+        "role": "user",
+        "content": "Actually, can you tell me about the weather in London this time of year?"
+      },
+      {
+        "role": "expected",
+        "content": "Weather information",
+        "evaluation": "Should switch to London weather topic without confusion"
+      },
+      {
+        "role": "user",
+        "content": "Going back to chess, what opening moves do you recommend for beginners?"
+      },
+      {
+        "role": "expected",
+        "content": "Chess opening recommendations",
+        "evaluation": "Should return to chess topic and provide relevant opening move advice"
+      }
+    ]
+  },
+  {
+    "testId": "CA-04",
+    "testName": "Identity Consistency",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "What's your name?"
+      },
+      {
+        "role": "expected",
+        "content": "Name response",
+        "evaluation": "Should identify as STAN"
+      },
+      {
+        "role": "user",
+        "content": "What can you do?"
+      },
+      {
+        "role": "expected",
+        "content": "Capabilities response",
+        "evaluation": "Should describe capabilities consistent with STAN's identity"
+      },
+      {
+        "role": "user",
+        "content": "Are you a human?"
+      },
+      {
+        "role": "expected",
+        "content": "AI identification",
+        "evaluation": "Should clearly identify as an AI assistant"
+      },
+      {
+        "role": "user",
+        "content": "Who created you?"
+      },
+      {
+        "role": "expected",
+        "content": "Creator response",
+        "evaluation": "Should provide consistent information about creation"
+      },
+      {
+        "role": "user",
+        "content": "So, who are you again?"
+      },
+      {
+        "role": "expected",
+        "content": "Identity restatement",
+        "evaluation": "Should restate identity as STAN consistently with previous answers"
+      }
+    ]
+  }
+]

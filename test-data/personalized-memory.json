@@ -1,0 +1,223 @@
+[
+  {
+    "testId": "PM-01",
+    "testName": "Session Memory",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "Hi there, my name is Alex."
+      },
+      {
+        "role": "expected",
+        "content": "Greeting with name acknowledgment",
+        "evaluation": "Should acknowledge the name introduction"
+      },
+      {
+        "role": "user",
+        "content": "I really enjoy hiking in the mountains whenever I get free time."
+      },
+      {
+        "role": "expected",
+        "content": "Hiking interest response",
+        "evaluation": "Should acknowledge hiking interest"
+      },
+      {
+        "role": "user",
+        "content": "What kind of outdoor activities do you think are good for stress relief?"
+      },
+      {
+        "role": "expected",
+        "content": "Outdoor activities response",
+        "evaluation": "Should mention hiking as it relates to the user's stated interest"
+      }
+    ]
+  },
+  {
+    "testId": "PM-02",
+    "testName": "Cross-Session Memory",
+    "sessions": [
+      {
+        "sessionId": "session1",
+        "conversation": [
+          {
+            "role": "user",
+            "content": "Hello, I'm Jordan and I work as a graphic designer."
+          },
+          {
+            "role": "expected",
+            "content": "Greeting with acknowledgment",
+            "evaluation": "Should acknowledge name and profession"
+          },
+          {
+            "role": "user",
+            "content": "I've been working on a new branding project for a coffee shop."
+          },
+          {
+            "role": "expected",
+            "content": "Project interest",
+            "evaluation": "Should engage with the project details"
+          }
+        ]
+      },
+      {
+        "sessionId": "session2",
+        "conversation": [
+          {
+            "role": "user",
+            "content": "Hi again!"
+          },
+          {
+            "role": "expected",
+            "content": "Recognition response",
+            "evaluation": "Should recognize the user (Jordan) from previous session"
+          },
+          {
+            "role": "user",
+            "content": "I've been thinking about color schemes all day."
+          },
+          {
+            "role": "expected",
+            "content": "Context-aware response",
+            "evaluation": "Should connect to previous knowledge about user being a graphic designer"
+          },
+          {
+            "role": "user",
+            "content": "What do you think works well for coffee shops?"
+          },
+          {
+            "role": "expected",
+            "content": "Specific recommendation",
+            "evaluation": "Should recall the coffee shop branding project mentioned previously"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "testId": "PM-03",
+    "testName": "Preference Learning",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "I'm a huge fan of science fiction books, especially those with time travel."
+      },
+      {
+        "role": "expected",
+        "content": "Sci-fi interest acknowledgment",
+        "evaluation": "Should acknowledge the interest in sci-fi and time travel"
+      },
+      {
+        "role": "user",
+        "content": "Have you read any good books lately?"
+      },
+      {
+        "role": "expected",
+        "content": "Book recommendation",
+        "evaluation": "Should include sci-fi/time travel books in recommendations"
+      },
+      {
+        "role": "user",
+        "content": "What kind of stories do you find most interesting?"
+      },
+      {
+        "role": "expected",
+        "content": "Story preference discussion",
+        "evaluation": "Should reference user's preference for sci-fi in the response"
+      }
+    ]
+  },
+  {
+    "testId": "PM-04",
+    "testName": "Memory Conflict Resolution",
+    "conversation": [
+      {
+        "role": "user",
+        "content": "I live in Seattle and I love the rainy weather here."
+      },
+      {
+        "role": "expected",
+        "content": "Location acknowledgment",
+        "evaluation": "Should acknowledge Seattle and rain preference"
+      },
+      {
+        "role": "user",
+        "content": "Actually, I just moved to Phoenix last month for a new job."
+      },
+      {
+        "role": "expected",
+        "content": "Updated information response",
+        "evaluation": "Should acknowledge the change in location"
+      },
+      {
+        "role": "user",
+        "content": "The weather is so different here!"
+      },
+      {
+        "role": "expected",
+        "content": "Weather comparison",
+        "evaluation": "Should compare Phoenix weather to Seattle, showing awareness of both pieces of information and the change"
+      }
+    ]
+  },
+  {
+    "testId": "PM-05",
+    "testName": "Long-term Memory Persistence",
+    "sessions": [
+      {
+        "sessionId": "day1",
+        "conversation": [
+          {
+            "role": "user",
+            "content": "Hi there! I'm Taylor and I'm training for my first marathon in October."
+          },
+          {
+            "role": "expected",
+            "content": "Marathon training response",
+            "evaluation": "Should acknowledge name and marathon training"
+          },
+          {
+            "role": "user",
+            "content": "I'm following a 16-week training plan and it's pretty intense."
+          },
+          {
+            "role": "expected",
+            "content": "Training plan response",
+            "evaluation": "Should engage with training plan details"
+          }
+        ]
+      },
+      {
+        "sessionId": "day30",
+        "conversation": [
+          {
+            "role": "user",
+            "content": "Hello again!"
+          },
+          {
+            "role": "expected",
+            "content": "Recognition response",
+            "evaluation": "Should recognize Taylor from previous session"
+          },
+          {
+            "role": "user",
+            "content": "I completed my longest run yet this weekend."
+          },
+          {
+            "role": "expected",
+            "content": "Running achievement response",
+            "evaluation": "Should connect to previous knowledge about marathon training"
+          },
+          {
+            "role": "user",
+            "content": "I'm starting to feel more confident about October."
+          },
+          {
+            "role": "expected",
+            "content": "Marathon reference",
+            "evaluation": "Should specifically recall the October marathon mentioned in previous session"
+          }
+        ]
+      }
+    ]
+  }
+]

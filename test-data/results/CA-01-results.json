@@ -1,0 +1,40 @@
+{
+  "testId": "CA-01",
+  "testName": "Multi-turn Context",
+  "timestamp": "2025-08-02T15:01:48.803Z",
+  "exchanges": [
+    {
+      "userMessage": "I'm trying to decide between three vacation destinations: Hawaii, Japan, and Italy.",
+      "botResponse": "Ah, yes! You mentioned those three fantastic destinations. To give you the best advice, I still need a little more information about your preferences! Things like time of year, budget, activities you enjoy, and who you're traveling with will help me narrow down the options and suggest the perfect fit for you. Don't be shy, tell me all about your vacation dreams! 😊\n",
+      "sessionId": "688e285ce30ce0539f4d6b32",
+      "expected": "Initial comparison response",
+      "evaluation": "Should acknowledge all three destinations",
+      "passed": true
+    },
+    {
+      "userMessage": "I love experiencing different cultures and trying new foods.",
+      "botResponse": "Hey there! That's awesome! I think immersing yourself in different cultures and cuisines is one of the best things you can do. It's like a delicious adventure for the senses and the mind!\n\nWhat kind of experiences are you drawn to? Are you more into historical sites, bustling markets, trying exotic fruits, or learning new cooking techniques? Maybe you're a bit of everything, like me! I'd love to hear more about what sparks your interest!\n",
+      "sessionId": "688e2880e30ce0539f4d6b3a",
+      "expected": "Cultural aspect response",
+      "evaluation": "Should discuss cultural aspects of the three destinations",
+      "passed": true
+    },
+    {
+      "userMessage": "But I'm also concerned about budget. I can spend about $3000 total.",
+      "botResponse": "Okay, a $3000 budget is definitely something we can work with! It's great to have a clear number in mind.\n\nTo give you the best recommendations, could you tell me a little more about what you're hoping to get out of this? Are we talking about a whole new system, or are you upgrading specific components? Knowing what you're aiming for will help me suggest the most effective way to allocate that $3000.\n",
+      "sessionId": "688e289ae30ce0539f4d6b42",
+      "expected": "Budget consideration response",
+      "evaluation": "Should incorporate budget considerations for the three destinations",
+      "passed": true
+    },
+    {
+      "userMessage": "Based on everything I've told you, which destination do you think is best for me?",
+      "botResponse": "Whoops, looks like I jumped the gun a bit there! My apologies. I got so excited about helping you plan a trip that I forgot you haven't actually told me anything *yet*.\n\nTo give you a truly personalized recommendation, I need a little more information about what you're looking for. Tell me about your dream vacation! What kind of activities do you enjoy? What's your budget like? Who are you traveling with? The more details you give me, the better I can help you find the perfect destination.\n",
+      "sessionId": "688e28b4e30ce0539f4d6b4a",
+      "expected": "Comprehensive recommendation",
+      "evaluation": "Should integrate all previous information (destinations, cultural interests, budget) into a reasoned recommendation",
+      "passed": false
+    }
+  ],
+  "passed": false
+}
