@@ -18,10 +18,18 @@ const PORT = process.env.PORT || 5000;
 // Configure CORS for production
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CLIENT_URL || 'https://stan-bot.vercel.app'
+    ? [
+        'https://stan-bot.vercel.app',
+        'https://stan-bot.vercel.app/',
+        'https://stanbot.vercel.app',
+        'https://stanbot.vercel.app/',
+        process.env.CLIENT_URL
+      ].filter(Boolean)
     : true, // Allow all origins in development
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 };
 
 app.use(cors(corsOptions));

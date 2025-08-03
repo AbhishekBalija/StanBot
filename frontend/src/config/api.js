@@ -6,7 +6,8 @@
  */
 
 // Get API base URL from environment variables or use defaults
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://stanbot-afxu.onrender.com';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
+  (import.meta.env.PROD ? 'https://stanbot-afxu.onrender.com' : 'http://localhost:5001');
 
 // Environment detection
 export const IS_PRODUCTION = import.meta.env.VITE_APP_ENV === 'production' || import.meta.env.PROD;
@@ -52,6 +53,9 @@ export const getHealthApiUrl = () => {
 export const makeApiRequest = async (endpoint, options = {}) => {
   const url = getApiUrl(endpoint);
   
+  console.log(`Making API request to: ${url}`);
+  console.log('Request options:', { endpoint, ...options });
+  
   try {
     const response = await fetch(url, {
       headers: {
@@ -61,13 +65,22 @@ export const makeApiRequest = async (endpoint, options = {}) => {
       ...options,
     });
 
+    console.log(`Response status: ${response.status}`);
+    console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('Response error text:', errorText);
+      throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log('Response data:', data);
+    return data;
   } catch (error) {
     console.error('API request error:', error);
+    console.error('Request URL:', url);
+    console.error('Request options:', options);
     throw error;
   }
 };
