@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
-import { logError, logWarn } from '../utils/logger.js';
+import { logError, logWarn, logInfo } from '../utils/logger.js';
 
 dotenv.config();
 
