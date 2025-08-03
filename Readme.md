@@ -36,7 +36,7 @@ STAN AI Chatbot is a human-like conversational agent designed for consumer-facin
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js (v18 or higher)
 - MongoDB (local or Atlas)
 - Google Gemini API key
 
@@ -90,6 +90,23 @@ npm run dev
 ```
 
 3. Open your browser and navigate to `http://localhost:5173`
+
+## 🚀 Production Deployment
+
+For production deployment, see the comprehensive guide in `backend/PRODUCTION.md`.
+
+**Quick Production Setup:**
+1. Set `NODE_ENV=production` in your environment variables
+2. Configure MongoDB Atlas for database
+3. Set up your Gemini API key
+4. Deploy to your preferred cloud platform (Render, Railway, Heroku, etc.)
+
+The application is production-ready with:
+- ✅ Security features (Helmet, CORS, rate limiting)
+- ✅ Structured logging and monitoring
+- ✅ Health check endpoints
+- ✅ Graceful shutdown handling
+- ✅ Comprehensive error handling
 
 ## 🧪 Testing
 

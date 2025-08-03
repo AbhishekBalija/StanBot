@@ -1,6 +1,7 @@
 import { ChatSession } from '../models/ChatSession.js';
 import { Message } from '../models/Message.js';
 import { generateResponse, analyzeUserSentiment } from '../services/geminiService.js';
+import { logError, logWarn, logInfo } from '../utils/logger.js';
 
 /**
  * Process an incoming chat message
@@ -51,7 +52,7 @@ export const processMessage = async (req, res) => {
     try {
       sentiment = await analyzeUserSentiment(message);
     } catch (error) {
-      console.error('Error analyzing sentiment:', error);
+      logError('Error analyzing sentiment', { error: error.message, message });
       sentiment = 'neutral'; // Default to neutral on error
     }
     
@@ -74,7 +75,7 @@ export const processMessage = async (req, res) => {
     try {
       aiResponse = await generateResponse(message, conversationHistory, sentiment);
     } catch (error) {
-      console.error('Error generating response:', error);
+      logError('Error generating response', { error: error.message, message });
       aiResponse = "I'm sorry, but I'm having trouble processing your request right now. Please try again later.";
     }
 
@@ -91,7 +92,7 @@ export const processMessage = async (req, res) => {
       sessionId: session._id,
     });
   } catch (error) {
-    console.error('Error processing message:', error);
+    logError('Error processing message', { error: error.message, sessionId });
     return res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

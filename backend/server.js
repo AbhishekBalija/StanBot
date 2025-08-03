@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import { chatRouter } from './routes/chat.js';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import { logApiRequest, logInfo, logError, logWarn } from './utils/logger.js';
 
 // Load environment variables
 dotenv.config();
@@ -27,6 +28,16 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Request logging middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const responseTime = Date.now() - start;
+    logApiRequest(req, res, responseTime);
+  });
+  next();
+});
+
 // Security middleware for production
 if (process.env.NODE_ENV === 'production') {
   app.use(helmet({
@@ -40,10 +51,10 @@ if (process.env.NODE_ENV === 'production') {
     },
   }));
   
-  // Rate limiting
+  // Rate limiting with configurable limits
   const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
+    max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
     message: 'Too many requests from this IP, please try again later.',
     standardHeaders: true,
     legacyHeaders: false,
@@ -67,64 +78,65 @@ const connectDB = async () => {
       mongoOptions
     );
     
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    logInfo(`MongoDB Connected: ${conn.connection.host}`);
     
     // Handle connection events
     mongoose.connection.on('error', (err) => {
-      console.error('MongoDB connection error:', err);
+      logError('MongoDB connection error', { error: err.message });
     });
     
     mongoose.connection.on('disconnected', () => {
-      console.warn('MongoDB disconnected');
+      logWarn('MongoDB disconnected');
     });
     
     mongoose.connection.on('reconnected', () => {
-      console.log('MongoDB reconnected');
+      logInfo('MongoDB reconnected');
     });
     
   } catch (error) {
-    console.error(`MongoDB Connection Error: ${error.message}`);
-    // Continue running the server even if MongoDB connection fails
-    console.log('Server will run without database functionality');
+    logError(`MongoDB Connection Error: ${error.message}`);
     
     if (process.env.NODE_ENV === 'production') {
-      // In production, you might want to exit if database is critical
-      // Uncomment the next line if database is required
-      // process.exit(1);
+      // In production, exit if database connection fails as it's critical
+      logError('Critical: Database connection failed in production. Exiting...');
+      process.exit(1);
+    } else {
+      // In development, continue running without database functionality
+      logWarn('Server will run without database functionality');
     }
   }
 };
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
-  console.log('\nReceived SIGINT. Graceful shutdown...');
+  logInfo('Received SIGINT. Graceful shutdown...');
   try {
     await mongoose.connection.close();
-    console.log('MongoDB connection closed.');
+    logInfo('MongoDB connection closed.');
     process.exit(0);
   } catch (error) {
-    console.error('Error during shutdown:', error);
+    logError('Error during shutdown', { error: error.message });
     process.exit(1);
   }
 });
 
 process.on('SIGTERM', async () => {
-  console.log('\nReceived SIGTERM. Graceful shutdown...');
+  logInfo('Received SIGTERM. Graceful shutdown...');
   try {
     await mongoose.connection.close();
-    console.log('MongoDB connection closed.');
+    logInfo('MongoDB connection closed.');
     process.exit(0);
   } catch (error) {
-    console.error('Error during shutdown:', error);
+    logError('Error during shutdown', { error: error.message });
     process.exit(1);
   }
 });
 
 // Check Gemini API key
 if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'your_gemini_api_key_here') {
-  console.warn('WARNING: Gemini API key is not set or is using a placeholder value.');
-  console.warn('The chatbot will not be able to generate responses without a valid API key.');
-  console.warn('Please set a valid GEMINI_API_KEY in your .env file.');
+  logWarn('WARNING: Gemini API key is not set or is using a placeholder value.');
+  logWarn('The chatbot will not be able to generate responses without a valid API key.');
+  logWarn('Please set a valid GEMINI_API_KEY in your .env file.');
 }
 
 // Routes
@@ -132,12 +144,34 @@ app.use('/api/chat', chatRouter);
 
 // Health check route
 app.get('/', (req, res) => {
-  res.json({ 
-    message: 'STAN AI Chatbot API is running', 
+  const healthCheck = {
+    message: 'STAN AI Chatbot API is running',
     status: 'healthy',
-    environment: process.env.NODE_ENV,
-    timestamp: new Date().toISOString()
-  });
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString(),
+    version: process.env.npm_package_version || '1.0.0',
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+  };
+
+  // Check database connection
+  if (mongoose.connection.readyState === 1) {
+    healthCheck.database = 'connected';
+  } else {
+    healthCheck.database = 'disconnected';
+    healthCheck.status = 'degraded';
+  }
+
+  // Check Gemini API key
+  if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here') {
+    healthCheck.gemini_api = 'configured';
+  } else {
+    healthCheck.gemini_api = 'not_configured';
+    healthCheck.status = 'degraded';
+  }
+
+  const statusCode = healthCheck.status === 'healthy' ? 200 : 503;
+  res.status(statusCode).json(healthCheck);
 });
 
 // 404 handler
@@ -150,7 +184,12 @@ app.use('*', (req, res) => {
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error('Error:', err.stack);
+  logError('Unhandled error', { 
+    error: err.message, 
+    stack: err.stack,
+    url: req.originalUrl,
+    method: req.method 
+  });
   
   if (process.env.NODE_ENV === 'production') {
     // Don't leak error details in production
@@ -169,7 +208,23 @@ app.use((err, req, res, next) => {
 
 // Start server
 connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  const server = app.listen(PORT, () => {
+    logInfo(`🚀 STAN AI Chatbot API running on port ${PORT}`);
+    logInfo(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+    logInfo(`🔗 Health check: http://localhost:${PORT}/`);
+    
+    if (process.env.NODE_ENV === 'production') {
+      logInfo('🛡️  Production mode: Security features enabled');
+      logInfo('📈 Rate limiting: Active');
+      logInfo('🔒 CORS: Restricted to configured origins');
+    }
+  });
+
+  // Handle server errors
+  server.on('error', (error) => {
+    logError('Server error', { error: error.message });
+    if (process.env.NODE_ENV === 'production') {
+      process.exit(1);
+    }
   });
 });

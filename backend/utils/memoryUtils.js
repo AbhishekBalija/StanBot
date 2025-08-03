@@ -1,5 +1,6 @@
 import { Message } from '../models/Message.js';
 import { generateEmbedding } from './embeddingUtils.js';
+import { logError } from './logger.js';
 
 /**
  * Extract key information from a conversation to store in memory
@@ -8,8 +9,8 @@ import { generateEmbedding } from './embeddingUtils.js';
  */
 export const extractKeyInformation = async (text) => {
   try {
-    // In a production system, you would use NLP to extract entities and topics
-    // For this example, we'll use a simple regex-based approach
+    // For production: Consider using advanced NLP libraries like spaCy or cloud NLP services
+    // This implementation uses regex-based entity extraction for basic functionality
     
     const entities = {};
     
@@ -45,7 +46,7 @@ export const extractKeyInformation = async (text) => {
     
     return entities;
   } catch (error) {
-    console.error('Error extracting key information:', error);
+    logError('Error extracting key information', { error: error.message });
     return {};
   }
 };
@@ -79,7 +80,7 @@ export const storeMessageWithMemory = async (sessionId, content, role, sentiment
     await message.save();
     return message;
   } catch (error) {
-    console.error('Error storing message with memory:', error);
+    logError('Error storing message with memory', { error: error.message });
     throw error;
   }
 };
@@ -136,7 +137,7 @@ export const retrieveRelevantMemories = async (sessionId, currentMessage, limit 
     
     // Calculate similarity scores
     const scoredMessages = similarMessages.map(message => {
-      // Simple dot product similarity (in production, use proper vector search)
+      // Cosine similarity calculation (for production: consider optimized vector search)
       const similarity = cosineSimilarity(embedding, message.embedding);
       
       return { message, similarity };
@@ -156,7 +157,7 @@ export const retrieveRelevantMemories = async (sessionId, currentMessage, limit 
     
     return uniqueMessages;
   } catch (error) {
-    console.error('Error retrieving relevant memories:', error);
+    logError('Error retrieving relevant memories', { error: error.message });
     return [];
   }
 };

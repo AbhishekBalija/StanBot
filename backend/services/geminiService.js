@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
+import { logError, logWarn } from '../utils/logger.js';
 
 dotenv.config();
 
@@ -38,7 +39,7 @@ export const generateResponse = async (userMessage, conversationHistory, sentime
     
     return response.text();
   } catch (error) {
-    console.error('Error generating response with Gemini:', error);
+    logError('Error generating response with Gemini', { error: error.message });
     return 'I apologize, but I\'m having trouble processing your request right now. Please try again later.';
   }
 };
@@ -131,7 +132,7 @@ export const analyzeUserSentiment = async (message) => {
     
     return 'neutral'; // Default fallback
   } catch (error) {
-    console.error('Error analyzing sentiment with Gemini:', error);
+    logError('Error analyzing sentiment with Gemini', { error: error.message });
     return 'neutral'; // Default to neutral on error
   }
 };
@@ -148,7 +149,7 @@ export const generateEmbedding = async (text) => {
     const result = await model.embedContent(text);
     return result.embedding.values;
   } catch (error) {
-    console.error('Error generating embedding with Gemini:', error);
+    logError('Error generating embedding with Gemini', { error: error.message });
     return null;
   }
 };

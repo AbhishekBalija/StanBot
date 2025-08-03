@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
+import { logError } from './logger.js';
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ export const generateEmbedding = async (text) => {
     const result = await model.embedContent(text);
     return result.embedding.values;
   } catch (error) {
-    console.error('Error generating embedding with Gemini:', error);
+    logError('Error generating embedding with Gemini', { error: error.message });
     return null;
   }
 };
@@ -37,8 +38,8 @@ export const findSimilarMessages = async (query, Message, limit = 5) => {
     if (!embedding) return [];
 
     // Find similar messages using vector similarity
-    // Note: This is a simplified version. In production, you would use a vector database
-    // or MongoDB's $vectorSearch operator (MongoDB 5.0+)
+    // For production: Consider using MongoDB Atlas Vector Search or dedicated vector DB
+    // This implementation uses cosine similarity for basic vector search
     const messages = await Message.find({
       embedding: { $exists: true },
     }).limit(100); // Get recent messages with embeddings
@@ -55,7 +56,7 @@ export const findSimilarMessages = async (query, Message, limit = 5) => {
       .slice(0, limit)
       .map(item => item.message);
   } catch (error) {
-    console.error('Error finding similar messages:', error);
+    logError('Error finding similar messages', { error: error.message });
     return [];
   }
 };
