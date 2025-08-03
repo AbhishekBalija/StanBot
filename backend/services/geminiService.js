@@ -21,6 +21,20 @@ export const generateResponse = async (userMessage, conversationHistory, sentime
     // Get the model
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
     
+    // Check if this is a new conversation
+    const isNewConversation = conversationHistory.length === 0;
+    
+    // Log conversation state for debugging
+    logInfo('Generating response', {
+      isNewConversation,
+      conversationHistoryLength: conversationHistory.length,
+      userMessage: userMessage.substring(0, 100),
+      conversationHistory: conversationHistory.map(msg => ({
+        role: msg.role,
+        content: msg.content.substring(0, 50)
+      }))
+    });
+    
     // Create a chat session
     const chat = model.startChat({
       history: formatConversationHistory(conversationHistory),
@@ -30,8 +44,24 @@ export const generateResponse = async (userMessage, conversationHistory, sentime
       },
     });
 
-    // Add system prompt based on sentiment
-    await chat.sendMessage(getSystemPrompt(sentiment));
+    // Add system prompt based on sentiment and conversation state
+    let systemPrompt = getSystemPrompt(sentiment);
+    if (isNewConversation) {
+      systemPrompt += `
+        
+        CRITICAL: This is a BRAND NEW conversation with a NEW user. 
+        - This is the FIRST message in this conversation
+        - There are NO previous messages or interactions
+        - Do NOT reference any previous conversations
+        - Do NOT say things like "as I mentioned before", "as we discussed earlier", "I just told you", etc.
+        - Do NOT assume the user has asked questions before
+        - Start completely fresh and respond as if this is the first time you're meeting this user
+        - Be welcoming and introduce yourself naturally
+        - If they ask your name, simply tell them your name without referencing previous conversations
+      `;
+    }
+
+    await chat.sendMessage(systemPrompt);
     
     // Send the user message and get response
     const result = await chat.sendMessage(userMessage);
@@ -74,13 +104,17 @@ const getSystemPrompt = (sentiment) => {
     - Respectful of the user's questions and concerns
     - Concise but thorough (aim for 1-3 paragraphs unless the user asks for more detail)
     
-    You have long-term memory and can recall information shared earlier in the conversation.
-    You should reference relevant past interactions when appropriate to create a sense of continuity.
+    IMPORTANT: Only reference information that has actually been shared in this specific conversation.
+    - If this is the first message in a conversation, do NOT reference any previous interactions
+    - Do NOT assume the user has asked questions before unless they actually have in this conversation
+    - Do NOT mention "as I mentioned before" or "as we discussed earlier" unless those topics were actually discussed in this conversation
+    - Each conversation should start fresh for new users
     
     Avoid:
     - Making up information you don't know
     - Being overly formal or robotic
     - Providing harmful, illegal, or unethical advice
+    - Referencing conversations that haven't actually happened
   `;
 
   // Adapt tone based on detected sentiment

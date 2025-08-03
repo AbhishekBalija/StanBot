@@ -64,11 +64,26 @@ export const processMessage = async (req, res) => {
       sentiment: sentiment,
     });
 
-    // Get recent conversation history
-    const conversationHistory = await Message.find({ sessionId: session._id })
+    // Get recent conversation history for this specific session only
+    const conversationHistory = await Message.find({ 
+      sessionId: session._id,
+      _id: { $ne: userMessage._id } // Exclude the current user message
+    })
       .sort({ createdAt: -1 })
       .limit(10)
       .sort({ createdAt: 1 });
+
+    // Log session and conversation details for debugging
+    logInfo('Processing message', {
+      sessionId: session._id,
+      isNewSession: !sessionId,
+      conversationHistoryLength: conversationHistory.length,
+      userMessage: message.substring(0, 100), // Log first 100 chars of message
+      conversationHistoryMessages: conversationHistory.map(msg => ({
+        role: msg.role,
+        content: msg.content.substring(0, 50) // Log first 50 chars of each message
+      }))
+    });
 
     // Generate AI response
     let aiResponse;
