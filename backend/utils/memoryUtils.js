@@ -1,6 +1,6 @@
 import { Message } from '../models/Message.js';
 import { generateEmbedding } from './embeddingUtils.js';
-import { logError } from './logger.js';
+import { logError, logInfo } from './logger.js';
 
 /**
  * Extract key information from a conversation to store in memory
@@ -123,36 +123,27 @@ export const retrieveRelevantMemories = async (sessionId, currentMessage, limit 
       .sort({ createdAt: -1 })
       .limit(10);
     
-    // Get messages with similar content from the past
-    const embedding = await generateEmbedding(currentMessage);
+    // Use enhanced vector search for semantic similarity
+    const { findSimilarMessages } = await import('./embeddingUtils.js');
+    const similarMessages = await findSimilarMessages(currentMessage, Message, limit, sessionId);
     
-    if (!embedding) return recentMessages;
-    
-    // Find similar messages using vector similarity
-    const similarMessages = await Message.find({
-      sessionId,
-      embedding: { $exists: true },
-      _id: { $nin: recentMessages.map(msg => msg._id) }, // Exclude recent messages
-    }).limit(100);
-    
-    // Calculate similarity scores
-    const scoredMessages = similarMessages.map(message => {
-      // Cosine similarity calculation (for production: consider optimized vector search)
-      const similarity = cosineSimilarity(embedding, message.embedding);
-      
-      return { message, similarity };
-    });
-    
-    // Sort by similarity and get top matches
-    const topSimilarMessages = scoredMessages
-      .sort((a, b) => b.similarity - a.similarity)
-      .slice(0, limit)
-      .map(item => item.message);
+    // Filter out recent messages from similar results
+    const recentMessageIds = recentMessages.map(msg => msg._id.toString());
+    const filteredSimilarMessages = similarMessages.filter(message => 
+      !recentMessageIds.includes(message._id.toString())
+    );
     
     // Combine recent and similar messages, removing duplicates
-    const allMessages = [...recentMessages, ...topSimilarMessages];
+    const allMessages = [...recentMessages, ...filteredSimilarMessages];
     const uniqueMessages = allMessages.filter((message, index, self) => {
       return index === self.findIndex(m => m._id.toString() === message._id.toString());
+    });
+    
+    logInfo('Retrieved relevant memories', { 
+      sessionId,
+      recentCount: recentMessages.length,
+      similarCount: filteredSimilarMessages.length,
+      totalCount: uniqueMessages.length
     });
     
     return uniqueMessages;

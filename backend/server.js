@@ -143,7 +143,7 @@ if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'your_gemini_a
 app.use('/api/chat', chatRouter);
 
 // Health check route
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   const healthCheck = {
     message: 'STAN AI Chatbot API is running',
     status: 'healthy',
@@ -168,6 +168,21 @@ app.get('/', (req, res) => {
   } else {
     healthCheck.gemini_api = 'not_configured';
     healthCheck.status = 'degraded';
+  }
+
+  // Check vector search availability (if database is connected)
+  if (mongoose.connection.readyState === 1) {
+    try {
+      const { isVectorSearchAvailable } = await import('./utils/vectorSearch.js');
+      const { Message } = await import('./models/Message.js');
+      const vectorSearchAvailable = await isVectorSearchAvailable(Message);
+      healthCheck.vectorSearch = vectorSearchAvailable ? 'available' : 'unavailable';
+    } catch (error) {
+      healthCheck.vectorSearch = 'error';
+      logError('Error checking vector search availability', { error: error.message });
+    }
+  } else {
+    healthCheck.vectorSearch = 'unknown';
   }
 
   const statusCode = healthCheck.status === 'healthy' ? 200 : 503;

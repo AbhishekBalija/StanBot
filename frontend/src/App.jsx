@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import PlatformContent from './components/PlatformContent';
 import ChatbotModal from './components/ChatbotModal';
+import { makeChatRequest, checkBackendHealth } from './config/api';
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -18,6 +19,20 @@ function App() {
     }
   }, []);
 
+  // Check backend health on component mount
+  useEffect(() => {
+    const performHealthCheck = async () => {
+      try {
+        const healthData = await checkBackendHealth();
+        console.log('Backend health check:', healthData);
+      } catch (error) {
+        console.error('Error checking backend health:', error);
+      }
+    };
+
+    performHealthCheck();
+  }, []);
+
   // Send message to backend
   const sendMessage = async (text) => {
     if (!text.trim()) return;
@@ -29,22 +44,10 @@ function App() {
 
     try {
       // Call backend API
-      const response = await fetch('http://localhost:5001/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          message: text,
-          sessionId: sessionId
-        }),
+      const data = await makeChatRequest({ 
+        message: text,
+        sessionId: sessionId
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to get response');
-      }
-
-      const data = await response.json();
       
       // Save session ID if it's new
       if (data.sessionId && (!sessionId || sessionId !== data.sessionId)) {

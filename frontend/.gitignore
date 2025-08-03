@@ -22,3 +22,30 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment files
+env.development
+env.production
+
+# Test results and reports
+test-results/
+*.test-results.json
+*.coverage.json
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# IDE specific files
+*.sublime-project
+*.sublime-workspace
+.atom/
+.brackets.json
+
+# OS specific
+*.lnk

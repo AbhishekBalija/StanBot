@@ -58,3 +58,46 @@ jspm_packages/
 # Temporary folders
 tmp/
 temp/
+.tmp/
+
+# Test results and reports
+test-data/results/
+*.test-results.json
+*.coverage.json
+
+# Environment files
+env.development
+env.production
+
+# Build outputs
+dist/
+build/
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.csr
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# IDE specific files
+*.sublime-project
+*.sublime-workspace
+.atom/
+.brackets.json
+
+# OS specific
+*.lnk

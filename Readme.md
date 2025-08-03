@@ -93,6 +93,10 @@ npm run dev
 
 ## 🚀 Production Deployment
 
+### Backend Deployment
+
+The backend is deployed at: **https://stanbot-afxu.onrender.com**
+
 For production deployment, see the comprehensive guide in `backend/PRODUCTION.md`.
 
 **Quick Production Setup:**
@@ -101,12 +105,30 @@ For production deployment, see the comprehensive guide in `backend/PRODUCTION.md
 3. Set up your Gemini API key
 4. Deploy to your preferred cloud platform (Render, Railway, Heroku, etc.)
 
-The application is production-ready with:
+The backend is production-ready with:
 - ✅ Security features (Helmet, CORS, rate limiting)
 - ✅ Structured logging and monitoring
 - ✅ Health check endpoints
 - ✅ Graceful shutdown handling
 - ✅ Comprehensive error handling
+- ✅ MongoDB Atlas Vector Search support
+
+### Frontend Deployment
+
+The frontend is configured to connect to the deployed backend automatically.
+
+For frontend deployment, see the guide in `frontend/DEPLOYMENT.md`.
+
+**Quick Frontend Setup:**
+1. The frontend automatically uses the production backend
+2. Deploy to Vercel, Netlify, or your preferred platform
+3. No additional configuration required
+
+**Supported Platforms:**
+- ✅ Vercel (recommended)
+- ✅ Netlify
+- ✅ GitHub Pages
+- ✅ Render Static Sites
 
 ## 🧪 Testing
 

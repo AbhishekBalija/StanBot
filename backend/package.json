@@ -9,7 +9,8 @@
     "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "echo \"No build step required for Node.js\"",
-    "postinstall": "echo \"Backend dependencies installed successfully\""
+    "postinstall": "echo \"Backend dependencies installed successfully\"",
+    "setup-vector-search": "node scripts/setupVectorSearch.js"
   },
   "engines": {
     "node": ">=18.0.0",
